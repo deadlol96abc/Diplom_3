@@ -1,18 +1,22 @@
-import utils.Constants;
+
+
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
-import static utils.WebDriverCreator.createWebDriver;
+import utils.WebDriverCreator;
 
-public class BaseTest  {
-    WebDriver webDriver;
+public class BaseTest {
+    protected WebDriver webDriver;
+
     @Before
-    public void setUp(){
-        webDriver = createWebDriver();
-        webDriver.get(Constants.HOME_URL);
+    public void setUp() {
+        webDriver = WebDriverCreator.createWebDriver();
     }
+
     @After
-    public void tearDown(){
-        webDriver.quit();
+    public void tearDown() {
+        if (webDriver != null) {
+            webDriver.quit();
+        }
     }
 }

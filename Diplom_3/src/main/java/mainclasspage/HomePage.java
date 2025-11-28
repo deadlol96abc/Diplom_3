@@ -11,7 +11,7 @@ import java.time.Duration;
 public class HomePage {
     WebDriver webDriver;
 
-    // Локаторы
+
     private final By loginButton = By.cssSelector(".button_button__33qZ0.button_button_type_primary__1O7Bx.button_button_size_large__G21Vg");
     private final By orderButton = By.xpath(".//*[text()='Оформить заказ']");
     private final By profileButton = By.xpath(".//*[text()='Личный Кабинет']");
