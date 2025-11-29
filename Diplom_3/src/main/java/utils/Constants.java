@@ -12,4 +12,6 @@ public class Constants {
     public static final String CREATE_USER_API = "https://stellarburgers.education-services.ru/api/auth/register";
 
     public static final String DELETE_USER_API = "https://stellarburgers.education-services.ru/api/auth/user";
+
+    public static final String LOGIN_API = "https://stellarburgers.education-services.ru/api/auth/login";
 }

@@ -11,6 +11,8 @@ import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import static utils.RandomString.randomString;
 import user.UserClient;
+import user.User;
+import io.restassured.response.Response;
 
 public class RegistrationTest extends BaseTest {
     HomePage homePage;
@@ -20,14 +22,14 @@ public class RegistrationTest extends BaseTest {
     UserClient userClient;
     String accessToken;
 
-    String name =  randomString(10);
+    String name = randomString(10);
     String email = randomString(7) + "@yandex.ru";
     String correctPassword = randomString(6);
     String wrongPassword = randomString(5);
 
     @Before
     public void setUp() {
-        userClient = new UserClient(); // Инициализируем здесь для всех тестов
+        userClient = new UserClient();
         accessToken = null;
     }
 
@@ -60,10 +62,6 @@ public class RegistrationTest extends BaseTest {
 
         Assert.assertEquals("Имя должно совпадать", name, profilePage.getName());
         Assert.assertEquals("Email должен совпадать", email, profilePage.getEmail());
-
-        // Получаем токен для удаления
-        accessToken = userClient.login(email, correctPassword)
-                .then().extract().path("accessToken");
     }
 
     @Test
@@ -84,13 +82,13 @@ public class RegistrationTest extends BaseTest {
 
         Assert.assertEquals("Должно отображаться сообщение об ошибке пароля", "Некорректный пароль", registrationPage.getPasswordErrorText());
         Assert.assertEquals("URL должен соответствовать странице регистрации", Constants.REGISTER_URL, webDriver.getCurrentUrl());
-
-        // accessToken остается null - пользователь не создан
     }
 
     @After
     public void cleanUp() {
-        // Удаляем созданного пользователя
+        User user = new User(email, correctPassword, name);
+        Response resLoginUser = UserClient.login(user);
+        accessToken = resLoginUser.then().extract().path("accessToken");
         if (accessToken != null) {
             userClient.deleteUser(accessToken);
         }
